@@ -501,13 +501,9 @@ def get_quiz_for_attempt(quiz_id):
                 return jsonify(error="forbidden", message="Quiz not found or not owned by teacher"), 403
             return jsonify(error="not_found", message="Quiz not found"), 404
 
-        question_fields = "id,prompt,choices,position"
-        if role == "teacher":
-            question_fields = "id,prompt,choices,correct_option,position"
-
         questions_response = (
             client.table("questions")
-            .select(question_fields)
+            .select("id,prompt,choices,position")
             .eq("quiz_id", quiz_id)
             .order("position")
             .execute()
@@ -597,6 +593,7 @@ def submit_quiz(quiz_id):
 
         submitted_ids = set()
         responses_payload = []
+        detailed_results = []
         correct_count = 0
 
         for answer in answers:
@@ -624,6 +621,13 @@ def submit_quiz(quiz_id):
                 correct_count += 1
 
             submitted_ids.add(question_id)
+            detailed_results.append(
+                {
+                    "question_id": question_id,
+                    "selected_option": selected_option,
+                    "correct_option": question_row.get("correct_option"),
+                }
+            )
             responses_payload.append(
                 {
                     "student_id": current_user.id,
@@ -659,4 +663,5 @@ def submit_quiz(quiz_id):
         score_percent=score_percent,
         correct_count=correct_count,
         total_questions=total_questions,
+        detailed_results=detailed_results,
     ), 201

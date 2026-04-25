@@ -190,6 +190,8 @@ export default function AttemptQuizForm({ quizId = "", initialQuizId = "" }) {
   };
 
   const handleSelectOption = (questionId, selectedOption) => {
+    if (result) return;
+
     setAnswers((prev) => {
       const existingIndex = prev.findIndex((item) => item.question_id === questionId);
       if (existingIndex === -1) {
@@ -205,7 +207,23 @@ export default function AttemptQuizForm({ quizId = "", initialQuizId = "" }) {
   const getSelectedOption = (questionId) =>
     answers.find((item) => item.question_id === questionId)?.selected_option;
 
+  const detailedResultsByQuestionId = useMemo(() => {
+    const entries = result?.detailed_results;
+    if (!Array.isArray(entries)) return {};
+
+    return entries.reduce((acc, item) => {
+      if (item?.question_id) {
+        acc[item.question_id] = item;
+      }
+      return acc;
+    }, {});
+  }, [result]);
+
   const handleSubmitQuiz = async () => {
+    if (result || submitting) {
+      return;
+    }
+
     setError("");
     setResult(null);
 
@@ -235,6 +253,10 @@ export default function AttemptQuizForm({ quizId = "", initialQuizId = "" }) {
       setSubmitting(true);
       const data = await submitQuiz(quizId, { answers }, token);
       setResult(data);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     } catch (err) {
       if (isAuthTokenError(err)) {
         window.localStorage.removeItem("token");
@@ -250,6 +272,27 @@ export default function AttemptQuizForm({ quizId = "", initialQuizId = "" }) {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const getOptionClasses = (questionId, optionIndex) => {
+    const selectedOption = getSelectedOption(questionId);
+    const selected = selectedOption === optionIndex;
+    const detailed = detailedResultsByQuestionId[questionId];
+
+    if (!result || !detailed) {
+      return selected
+        ? "border-slate-900 bg-slate-100"
+        : "border-slate-200 bg-white hover:bg-slate-50";
+    }
+
+    const isCorrectOption = detailed.correct_option === optionIndex;
+    const isSelectedOption = detailed.selected_option === optionIndex;
+    const isAnswerCorrect = detailed.selected_option === detailed.correct_option;
+
+    if (isAnswerCorrect && isSelectedOption) return "border-emerald-500 bg-emerald-50";
+    if (!isAnswerCorrect && isSelectedOption) return "border-red-500 bg-red-50";
+    if (isCorrectOption) return "border-emerald-500 bg-emerald-50";
+    return "border-slate-200 bg-white";
   };
 
   return (
@@ -364,23 +407,33 @@ export default function AttemptQuizForm({ quizId = "", initialQuizId = "" }) {
               <div className="mt-4 space-y-2">
                 {(question.choices || []).map((choice, optionIndex) => {
                   const selected = getSelectedOption(question.id) === optionIndex;
+                  const detailed = detailedResultsByQuestionId[question.id];
+                  const isCorrectOption = detailed?.correct_option === optionIndex;
+                  const isSelectedWrongOption =
+                    detailed?.selected_option === optionIndex &&
+                    detailed?.selected_option !== detailed?.correct_option;
                   return (
                     <label
                       key={`${question.id}-${optionIndex}`}
-                      className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-2.5 transition ${
-                        selected
-                          ? "border-slate-900 bg-slate-100"
-                          : "border-slate-200 bg-white hover:bg-slate-50"
-                      }`}
+                      className={`flex items-center gap-3 rounded-xl border px-4 py-2.5 transition ${
+                        result ? "cursor-not-allowed" : "cursor-pointer"
+                      } ${getOptionClasses(question.id, optionIndex)}`}
                     >
                       <input
                         type="radio"
                         name={`question-${question.id}`}
                         checked={selected}
                         onChange={() => handleSelectOption(question.id, optionIndex)}
+                        disabled={Boolean(result)}
                         className="h-4 w-4 border-slate-300 text-slate-900 focus:ring-slate-300"
                       />
                       <span className="text-sm text-slate-700">{choice}</span>
+                      {result && isCorrectOption ? (
+                        <span className="ml-2 text-xs text-green-600">Correct Answer</span>
+                      ) : null}
+                      {result && isSelectedWrongOption ? (
+                        <span className="ml-2 text-xs text-red-500">Your Answer</span>
+                      ) : null}
                     </label>
                   );
                 })}
@@ -392,7 +445,7 @@ export default function AttemptQuizForm({ quizId = "", initialQuizId = "" }) {
             <button
               type="button"
               onClick={handleSubmitQuiz}
-              disabled={submitting || !questions.length}
+              disabled={!!result || submitting || !questions.length}
               className="rounded-xl bg-black px-7 py-3 text-sm font-medium text-white transition hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {submitting ? "Submitting..." : "Submit Quiz"}
