@@ -1,0 +1,149 @@
+🧩 Phase 1: Planning & System Design (Day 1–2)
+🎯 Goal:
+
+Define what you are building before writing code
+
+Tasks:
+Finalize features (based on simplified version)
+Identify roles:
+Teacher
+Student
+Draw system flow:
+Login → Dashboard → Quiz → Result
+Create basic UI wireframes (rough sketches)
+📦 Deliverables:
+Final feature list
+User flow diagram
+Basic UI layout
+💡 Tip:
+
+Keep flows linear and simple — no branching complexity
+
+🗄️ Phase 2: Database Design (Day 2–3)
+🎯 Goal:
+
+Design a clean and scalable database
+
+Tables:
+users
+quizzes
+questions
+responses
+results
+Tasks:
+Define fields (id, relationships, constraints)
+Set foreign keys:
+quiz → teacher
+question → quiz
+response → student
+📦 Deliverables:
+ER Diagram
+Final schema
+💡 Tip:
+
+Avoid over-normalization — keep it practical
+
+⚙️ Phase 3: Backend Setup (Day 4–6)
+🎯 Goal:
+
+Build core logic (brain of your app)
+
+Tech:
+Node.js / Express (or Django if you prefer)
+Features:
+User authentication (login/register)
+Role handling (teacher/student)
+CRUD for quizzes & questions
+API for quiz attempt
+Auto evaluation logic
+📦 Deliverables:
+REST APIs:
+/auth
+/quiz
+/attempt
+/result
+💡 Tip:
+
+Test APIs using Postman before frontend
+
+🎨 Phase 4: Frontend Development (Day 7–10)
+🎯 Goal:
+
+Build user interface (React / Next.js)
+
+Pages:
+Login / Register
+Dashboard (role-based)
+Create Quiz (Teacher)
+Attempt Quiz (Student)
+Result Page
+Tasks:
+Build reusable components
+Connect APIs
+Add form validations
+📦 Deliverables:
+Fully working UI connected to backend
+💡 Tip:
+
+Don’t overdesign — clean UI > fancy UI
+
+⏱️ Phase 5: Core Features Implementation (Day 11–13)
+🎯 Goal:
+
+Add features that make your project stand out
+
+Features:
+⏳ Timer with auto-submit
+🔀 Random question order
+🚫 One attempt restriction
+📊 Instant result calculation
+📦 Deliverables:
+Fully functional quiz flow
+🧪 Phase 6: Testing & Debugging (Day 14–15)
+🎯 Goal:
+
+Make your project stable
+
+Test:
+Login/logout
+Quiz creation
+Quiz attempt
+Edge cases:
+timer expiry
+refresh page
+invalid inputs
+📦 Deliverables:
+Bug-free working system
+💡 Tip:
+
+Test like a user, not a developer
+
+🚀 Phase 7: Optimization & Polish (Day 16–17)
+🎯 Goal:
+
+Make your project look professional
+
+Improvements:
+Loading states
+Error handling
+Clean UI spacing
+Responsive design
+📦 Deliverables:
+Smooth user experience
+📑 Phase 8: Documentation & Viva Prep (Day 18–19)
+🎯 Goal:
+
+Prepare for evaluation
+
+Tasks:
+Finalize:
+SRS / PRD
+ER diagram
+Architecture diagram
+Prepare answers:
+Why RBAC?
+Why simplified design?
+Trade-offs made
+📦 Deliverables:
+Project report
+PPT

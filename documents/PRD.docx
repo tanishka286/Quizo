@@ -1,0 +1,83 @@
+📘 Product Requirement Document (PRD)
+Quizo – Smart Quiz Platform (Simplified Version)
+1. 📌 Introduction
+1.1 Purpose
+
+Quizo is a web-based quiz management platform designed to simplify the process of creating, attempting, and evaluating quizzes in an academic environment.
+
+This document defines the product requirements, core features, and system behavior of Quizo. It is intended for developers, project evaluators, and academic supervisors to understand the scope and functionality of the system.
+
+The platform focuses on delivering a streamlined and efficient quiz experience while maintaining essential features such as role-based access, automated evaluation, and real-time results.
+
+1.2 Product Overview
+
+Quizo is a lightweight and user-friendly application that enables:
+
+Teachers to create and manage quizzes
+Students to attempt quizzes within a time limit
+System to automatically evaluate responses and generate results
+
+The system eliminates the need for manual quiz checking by providing instant feedback and structured quiz management.
+
+Unlike complex learning systems, Quizo is designed to be focused, fast, and easy to use, making it ideal for academic projects and small-scale deployments.
+
+1.3 Scope
+
+The scope of Quizo includes the following core functionalities:
+
+User authentication (Teacher and Student roles)
+Quiz creation with multiple-choice questions (MCQs)
+Timed quiz participation
+Automatic answer evaluation
+Instant result generation
+
+The system does not include complex administrative workflows or advanced analytics, ensuring a clean and maintainable design while preserving essential functionality.
+
+1.4 Key Objectives
+
+The main objectives of Quizo are:
+
+To provide a simple and efficient platform for conducting quizzes
+To automate the evaluation process and reduce manual effort
+To ensure fair and controlled quiz attempts using timers and attempt restrictions
+To deliver a responsive and user-friendly interface
+To demonstrate core software engineering principles such as role-based access and database-driven design
+1.5 Target Users
+
+Quizo is designed for the following users:
+
+Teachers
+Create quizzes
+Add questions and correct answers
+View student results
+Students
+Attempt quizzes
+View scores and performance
+1.6 Product Vision
+
+The vision of Quizo is to provide a minimal yet powerful quiz platform that balances simplicity with functionality.
+
+Instead of focusing on unnecessary complexity, the system emphasizes:
+
+clarity in design
+efficiency in performance
+ease of use
+
+This makes Quizo a practical solution for academic environments and a strong demonstration of full-stack development skills.
+
+1.7 Key Features (High-Level)
+Role-based login system
+Quiz creation and management
+Randomized question order
+Timed quiz attempts with auto-submit
+Automatic MCQ evaluation
+Instant result display
+1.8 Design Philosophy
+
+Quizo follows a “Keep It Simple, Yet Effective” approach:
+
+Minimal steps for users
+Clean and intuitive UI
+Focus on core functionality over feature overload
+
+This ensures faster development, better maintainability, and a smoother user experience.
