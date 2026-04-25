@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { signup } from "@/services/auth";
 
 export default function SignupPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -16,7 +15,10 @@ export default function SignupPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const redirect = searchParams.get("redirect") || "";
+  const redirect = useMemo(() => {
+    if (typeof window === "undefined") return "";
+    return new URLSearchParams(window.location.search).get("redirect") || "";
+  }, []);
   const safeRedirectPath = redirect.startsWith("/") ? redirect : "";
 
   const handleChange = (e) => {
@@ -45,9 +47,7 @@ export default function SignupPage() {
       router.push("/dashboard");
     } catch (err) {
       if (!err?.response) {
-        setError(
-          "Cannot connect to backend. Start Flask API on http://127.0.0.1:5000."
-        );
+        setError("Cannot connect to backend. Check API configuration and server status.");
       } else {
         setError(
           err?.response?.data?.error ||
